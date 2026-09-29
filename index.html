@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<!-- htmlaunch:enhanced:v2 -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22hsl(34%2C72%25%2C58%25)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22hsl(64%2C72%25%2C44%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22url(%23g)%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20text-anchor%3D%22middle%22%20font-family%3D%22ui-sans-serif%2Csystem-ui%2C-apple-system%2CSegoe%20UI%2Csans-serif%22%20font-size%3D%2238%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%3EZ%3C%2Ftext%3E%3C%2Fsvg%3E">
+<meta name="theme-color" content="#7b1468">
+<meta name="description" content="网易云歌词转换器 | deployed with HTMLaunch">
+<link rel="canonical" href="https://zhangyuxuan2012.github.io/zhangyuxuan2012/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="网易云歌词转换器">
+<meta property="og:title" content="网易云歌词转换器">
+<meta property="og:description" content="网易云歌词转换器 | deployed with HTMLaunch">
+<meta property="og:url" content="https://zhangyuxuan2012.github.io/zhangyuxuan2012/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fzhangyuxuan2012.github.io%2Fzhangyuxuan2012%2F?w=1200&h=630">
+<meta property="og:image:alt" content="网易云歌词转换器">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="网易云歌词转换器">
+<meta name="twitter:description" content="网易云歌词转换器 | deployed with HTMLaunch">
+<meta name="twitter:image" content="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fzhangyuxuan2012.github.io%2Fzhangyuxuan2012%2F?w=1200&h=630">
+<meta name="twitter:image:alt" content="网易云歌词转换器">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>网易云歌词转换器</title>
+<style>
+  :root{
+    --bg:#12111a; --panel:#1c1a26; --panel2:#242230; --line:#332f42;
+    --ink:#e9e6f2; --muted:#9a93b0; --acc:#f2b34a; --acc-ink:#241c08;
+    --ok:#4cc38a; --warn:#e0a94e; --err:#e05c5c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif;
+    background:var(--bg); color:var(--ink);
+    background-image:
+      radial-gradient(1200px 500px at 80% -10%, rgba(242,179,74,.08), transparent 60%),
+      radial-gradient(900px 400px at -10% 110%, rgba(120,90,220,.10), transparent 60%);
+    min-height:100vh; padding:36px 16px 48px;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .wrap{width:100%;max-width:760px}
+  header{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .logo{width:46px;height:46px;border-radius:12px;flex:0 0 46px;
+    background:linear-gradient(145deg,#f2b34a,#d98a2b);display:flex;align-items:center;justify-content:center}
+  .logo svg{width:26px;height:26px}
+  h1{font-size:26px;font-weight:800;letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:14px;margin:6px 0 22px;line-height:1.7}
+  .sub b{color:var(--acc);font-weight:600}
+  .drop{
+    border:2px dashed var(--line);border-radius:16px;background:var(--panel);
+    padding:44px 20px;text-align:center;cursor:pointer;transition:all .18s ease;user-select:none;
+  }
+  .drop:hover,.drop.dragover{border-color:var(--acc);background:var(--panel2)}
+  .drop .big{font-size:16px;color:var(--ink);margin-bottom:8px}
+  .drop .small{font-size:12px;color:var(--muted)}
+  .drop svg{width:34px;height:34px;margin-bottom:12px;opacity:.75}
+  .hint{font-size:13px;color:var(--muted);margin-top:16px;line-height:1.8}
+  .hint code{background:var(--panel2);padding:1px 6px;border-radius:5px;color:var(--acc)}
+  .result{margin-top:22px;display:none}
+  .result h2{font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .stat{font-size:12px;color:var(--muted);font-weight:400}
+  .row{
+    display:flex;align-items:center;gap:10px;padding:11px 13px;border:1px solid var(--line);
+    border-radius:11px;background:var(--panel);margin-bottom:8px;
+  }
+  .row .name{flex:1;font-size:13px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--ink)}
+  .row .status{font-size:12px;flex-shrink:0}
+  .row .st-ok{color:var(--ok)} .row .st-warn{color:var(--warn)} .row .st-err{color:var(--err)}
+  .row .btn{
+    flex-shrink:0;border:none;background:var(--acc);color:var(--acc-ink);font-size:12px;font-weight:600;
+    padding:6px 13px;border-radius:7px;cursor:pointer;font-family:inherit;
+  }
+  .row .btn:hover{filter:brightness(1.08)}
+  .row .btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+  .row .btn.ghost:hover{color:var(--acc);border-color:var(--acc)}
+  .actions{margin-top:14px;display:flex;gap:10px;justify-content:flex-end}
+  .actions .btn{
+    border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:13px;
+    padding:8px 18px;border-radius:8px;cursor:pointer;font-family:inherit;
+  }
+  .actions .btn:hover{border-color:var(--acc);color:var(--acc)}
+  .actions .btn.main{background:var(--acc);color:var(--acc-ink);border-color:transparent;font-weight:600}
+  .actions .btn.main:hover{filter:brightness(1.08)}
+  .preview{
+    display:none;margin:8px 0 14px;padding:14px;border:1px solid var(--line);border-radius:11px;
+    background:var(--panel2);font-size:12px;line-height:1.8;color:var(--muted);
+    max-height:220px;overflow:auto;white-space:pre-wrap;word-break:break-all;
+  }
+  .preview .pl{color:var(--acc)}
+  .preview .po{color:#7dd3fc}
+  .note{margin-top:26px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:13px;color:var(--muted);line-height:1.9}
+  .note b{color:var(--ink)}
+  .note .t{color:var(--acc);font-weight:600}
+  @media (max-width:520px){
+    body{padding:24px 12px 40px}
+    h1{font-size:22px}
+    .drop{padding:34px 14px}
+    .row{flex-wrap:wrap}
+    .row .name{min-width:100%}
+    .sub{font-size:15px}
+    .hint{font-size:14px}
+    .note{font-size:14px}
+    .drop .big{font-size:15px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M8 17.5a2.2 2.2 0 1 1-1.4-2.05V7.6l9-2v8.7a2.2 2.2 0 1 1-1.4-2.05V8.9l-6.2 1.4v7.2z" fill="#241c08"/></svg>
+    </div>
+    <h1>网易云歌词转换器</h1>
+  </header>
+  <p class="sub">把网易云音乐下载的 <b>.lrc</b> 歌词（JSON 增强格式）转成<b>标准 LRC</b>，点读笔、车载播放器、K 歌软件等设备可直接识别。文件名保持不变，原文件不受影响。</p>
+
+  <div class="drop" id="drop">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4" stroke-linecap="round"/></svg>
+    <div class="big">将 .lrc 歌词文件拖到这里</div>
+    <div class="small">或点击此处选择文件，支持一次选择多个</div>
+  </div>
+  <input type="file" id="fileInput" multiple accept=".lrc" style="display:none">
+
+  <div class="hint">
+    支持两种来源：<code>网易云 JSON 增强格式</code>（含 <code>{"t":0,"c":[{"tx":"..."}]}</code> 行）自动转为标准时间轴；已是标准格式的文件原样保留。<br>
+    输出为 UTF-8 编码（带 BOM），与设备兼容。
+  </div>
+
+  <div class="result" id="result">
+    <h2>转换结果 <span class="stat" id="statText"></span></h2>
+    <div id="list"></div>
+    <div class="actions">
+      <button class="btn" id="clearBtn" type="button">清空列表</button>
+      <button class="btn main" id="downloadAll" type="button">全部下载</button>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>关于网易云歌词：</b>从网易云音乐 PC 端 / 移动端下载的 .lrc 歌词，词曲作者信息常以 JSON 片段混入（<span class="t">{"t":0,"c":[{"tx":"作词: ..."}]}</span> 这样的行），普通播放器会把整行当成歌词或直接报错。<br>
+    本工具会自动解析这类行，把 JSON 里的时间戳（毫秒）与文字展开成 <span class="t">[mm:ss.xx]</span> 标准时间轴；负时间戳、链接字段（li/or）会被安全过滤，<code>[offset:]/[length:]</code> 标签丢弃，全部内容按时间排序，保证在任何标准播放器上都显示正常。
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var drop = document.getElementById('drop');
+  var fileInput = document.getElementById('fileInput');
+  var resultBox = document.getElementById('result');
+  var listBox = document.getElementById('list');
+  var statText = document.getElementById('statText');
+  var downloadAllBtn = document.getElementById('downloadAll');
+  var clearBtn = document.getElementById('clearBtn');
+  var outputBlobs = [];
+
+  drop.addEventListener('click', function () { fileInput.click(); });
+  drop.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+  });
+  drop.setAttribute('tabindex', '0');
+  drop.setAttribute('role', 'button');
+  drop.setAttribute('aria-label', '选择或拖入歌词文件');
+  fileInput.addEventListener('change', function () {
+    handleFiles(fileInput.files);
+    fileInput.value = '';
+  });
+  drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('dragover'); });
+  drop.addEventListener('dragleave', function () { drop.classList.remove('dragover'); });
+  drop.addEventListener('drop', function (e) {
+    e.preventDefault();
+    drop.classList.remove('dragover');
+    if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
+  });
+
+  function parseTime(str) {
+    var m = str.match(/^(\d{1,2}):(\d{2})(?:[.:](\d{1,3}))?$/);
+    if (!m) return null;
+    var ms = parseInt(m[1], 10) * 60000 + parseInt(m[2], 10) * 1000;
+    if (m[3]) {
+      var f = m[3];
+      if (f.length === 1) f = f * 100;
+      else if (f.length === 2) f = f * 10;
+      ms += parseInt(f, 10);
+    }
+    return ms;
+  }
+  function fmtMs(ms) {
+    ms = Math.max(0, Math.round(ms));
+    var mm = Math.floor(ms / 60000), ss = Math.floor((ms % 60000) / 1000);
+    var cs = Math.min(99, Math.round((ms % 1000) / 10));
+    function p(n) { return (n < 10 ? '0' : '') + n; }
+    return p(mm) + ':' + p(ss) + '.' + p(cs);
+  }
+  function decodeText(buf) {
+    try { return new TextDecoder('utf-8', { fatal: true }).decode(buf); }
+    catch (e) {
+      try { return new TextDecoder('gb18030').decode(buf); }
+      catch (e2) { return new TextDecoder('utf-8').decode(buf); }
+    }
+  }
+  function extractTags(line) {
+    var re = /\[(\d{1,2}):(\d{2})(?:[.:](\d{1,3}))?\]/;
+    var tags = [], content = line, m;
+    while ((m = re.exec(content))) {
+      var t = parseTime([m[1], m[2], m[3] || ''].filter(Boolean).join(':'));
+      if (t !== null && t >= 0) tags.push(t);
+      content = content.slice(0, m.index) + content.slice(m.index + m[0].length);
+      re.lastIndex = m.index;
+    }
+    return { tags: tags, content: content.trim() };
+  }
+  function convert(text) {
+    var meta = [], entries = [], hasJSON = false;
+    var lines = text.split(/\r?\n/);
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (!line) continue;
+      if (line.charAt(0) === '{') {
+        hasJSON = true;
+        try {
+          var obj = JSON.parse(line);
+          if (obj && obj.c && Array.isArray(obj.c)) {
+            var t = obj.t || 0;
+            var parts = obj.c.map(function (c) {
+              return (c && typeof c.tx === 'string') ? c.tx : '';
+            }).join('');
+            if (parts.trim() && t >= 0) entries.push([t, parts.trim()]);
+          }
+        } catch (e) { }
+        continue;
+      }
+      var mm = line.match(/^\[(ti|ar|al|by|offset|length|re|ve):(.*?)\]\s*$/i);
+      if (mm) {
+        if (!/^(offset|length)$/i.test(mm[1])) meta.push('[' + mm[1].toLowerCase() + ':' + mm[2].trim() + ']');
+        continue;
+      }
+      var r = extractTags(line);
+      if (r.tags.length && r.content) {
+        for (var j = 0; j < r.tags.length; j++) entries.push([r.tags[j], r.content]);
+      }
+    }
+    entries.sort(function (a, b) { return a[0] - b[0]; });
+    var seen = {}, metaClean = [];
+    for (var k = 0; k < meta.length; k++) {
+      if (!seen[meta[k]]) { seen[meta[k]] = true; metaClean.push(meta[k]); }
+    }
+    var out = metaClean.slice();
+    for (var n = 0; n < entries.length; n++) out.push('[' + fmtMs(entries[n][0]) + ']' + entries[n][1]);
+    return { text: out.join('\n'), hasJSON: hasJSON };
+  }
+
+  function handleFiles(fileList) {
+    var files = Array.prototype.slice.call(fileList);
+    if (!files.length) return;
+    listBox.innerHTML = '';
+    outputBlobs = [];
+    resultBox.style.display = 'block';
+    var done = 0, okN = 0, warnN = 0, errN = 0;
+    files.forEach(function (file) {
+      if (!/\.lrc$/i.test(file.name)) {
+        errN++;
+        addRow(file.name, 'st-err', '不是 .lrc 文件', null, null);
+        if (++done === files.length) updateStat(files.length, okN, warnN, errN);
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var text = decodeText(reader.result);
+          var res = convert(text);
+          var lines = res.text.split('\n').filter(function (l) { return l.trim(); });
+          if (lines.length === 0) {
+            warnN++;
+            addRow(file.name, 'st-warn', '无可转换内容', null, null);
+          } else {
+            okN++;
+            var blob = new Blob(['\ufeff' + res.text], { type: 'text/plain;charset=utf-8' });
+            outputBlobs.push({ name: file.name, blob: blob });
+            var detail = res.hasJSON ? '已转换 ' + lines.length + ' 行' : '标准格式 ' + lines.length + ' 行';
+            addRow(file.name, 'st-ok', detail, file.name, { original: text, output: res.text, hasJSON: res.hasJSON });
+          }
+        } catch (e) {
+          errN++;
+          addRow(file.name, 'st-err', '转换失败', null, null);
+        }
+        if (++done === files.length) updateStat(files.length, okN, warnN, errN);
+      };
+      reader.onerror = function () {
+        errN++;
+        addRow(file.name, 'st-err', '读取失败', null, null);
+        if (++done === files.length) updateStat(files.length, okN, warnN, errN);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
+  function addRow(name, cls, text, downloadName, previewData) {
+    var row = document.createElement('div');
+    row.className = 'row';
+    var nameSpan = document.createElement('span');
+    nameSpan.className = 'name';
+    nameSpan.textContent = name;
+    nameSpan.title = name;
+    var status = document.createElement('span');
+    status.className = 'status ' + cls;
+    status.textContent = text;
+    row.appendChild(nameSpan);
+    row.appendChild(status);
+    if (downloadName) {
+      var prevBtn = document.createElement('button');
+      prevBtn.className = 'btn ghost';
+      prevBtn.textContent = '预览';
+      prevBtn.addEventListener('click', function () { togglePreview(row, previewData); });
+      row.appendChild(prevBtn);
+      var dlBtn = document.createElement('button');
+      dlBtn.className = 'btn';
+      dlBtn.textContent = '下载';
+      dlBtn.addEventListener('click', function () {
+        var blob = null;
+        for (var i = 0; i < outputBlobs.length; i++) {
+          if (outputBlobs[i].name === downloadName) { blob = outputBlobs[i].blob; break; }
+        }
+        if (blob) downloadBlob(downloadName, blob);
+      });
+      row.appendChild(dlBtn);
+    }
+    listBox.appendChild(row);
+  }
+
+  function togglePreview(row, data) {
+    var next = row.nextElementSibling;
+    if (next && next.classList && next.classList.contains('preview')) {
+      next.remove();
+      return;
+    }
+    var pv = document.createElement('div');
+    pv.className = 'preview';
+    var orig = data.original.split('\n').slice(0, 8).join('\n');
+    var out = data.output.split('\n').slice(0, 12).join('\n');
+    pv.innerHTML = '<span class="pl">转换前（前 8 行）</span>\n' + escapeHtml(orig) +
+      '\n\n<span class="pl">转换后（前 12 行）</span>\n' + escapeHtml(out);
+    row.after(pv);
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function updateStat(total, ok, warn, err) {
+    statText.textContent = '共 ' + total + ' 个 · 成功 ' + ok + ' · 跳过 ' + warn + ' · 失败 ' + err;
+  }
+
+  function downloadBlob(name, blob) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    }, 1000);
+  }
+
+  downloadAllBtn.addEventListener('click', function () {
+    outputBlobs.forEach(function (o, idx) {
+      setTimeout(function () { downloadBlob(o.name, o.blob); }, idx * 500);
+    });
+  });
+  clearBtn.addEventListener('click', function () {
+    listBox.innerHTML = '';
+    outputBlobs = [];
+    resultBox.style.display = 'none';
+  });
+})();
+</script>
+</body>
+</html>
